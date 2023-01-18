@@ -1,0 +1,42 @@
+/*
+ * Created by ArduinoGetStarted.com
+ *
+ * This example code is in the public domain
+ *
+ * Tutorial page: https://arduinogetstarted.com/reference/library/arduino-file.write
+ */
+
+#include <SD.h>
+
+#define PIN_SPI_CS 4
+
+File file;
+char buf[] = "Arduino";
+
+void setup() {
+  Serial.begin(9600);
+
+  if (!SD.begin(PIN_SPI_CS)) {
+    Serial.println(F("SD CARD FAILED, OR NOT PRESENT!"));
+    while (1); // don't do anything more:
+  }
+
+  SD.remove("arduino.txt"); // delete the file if existed
+
+  // create new file by opening file for writing
+  file = SD.open("arduino.txt", FILE_WRITE);
+
+  if (file) {
+    file.write('H'); // a character
+    file.write('i'); // a character
+    file.write('\n'); // new line
+    file.write(buf, 7);
+
+    file.close();
+  } else {
+    Serial.print(F("SD Card: error on opening file arduino.txt"));
+  }
+}
+
+void loop() {
+}
